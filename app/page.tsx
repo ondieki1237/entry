@@ -16,6 +16,8 @@ import {
   Facebook,
   Music,
   ShoppingCart,
+  Share2,
+  Copy,
 } from "lucide-react"
 
 interface Location {
@@ -114,6 +116,7 @@ const tiles = [
 export default function EntryPage() {
   const [showLocations, setShowLocations] = useState(false)
   const [showSocial, setShowSocial] = useState(false)
+  const [copied, setCopied] = useState(false)
 
   const handleWhatsApp = (phone: string) => {
     const message = encodeURIComponent("Hello Accord Medical — I would like help with...")
@@ -308,7 +311,17 @@ export default function EntryPage() {
 
               <div className="space-y-3">
                 <a
-                  href="https://instagram.com"
+                  href="https://x.com/AccordMedKe"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-3 px-4 rounded-lg font-medium flex items-center justify-center gap-2 button-hover transition-all duration-300"
+                  style={{ backgroundColor: "#00AEEF", color: "#FFFFFF" }}
+                >
+                  <MessageCircle className="w-5 h-5" />
+                  X (AccordMedKe)
+                </a>
+                <a
+                  href="https://www.instagram.com/accordmedicalke/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full py-3 px-4 rounded-lg font-medium flex items-center justify-center gap-2 button-hover transition-all duration-300"
@@ -318,7 +331,7 @@ export default function EntryPage() {
                   Instagram
                 </a>
                 <a
-                  href="https://facebook.com"
+                  href="https://www.facebook.com/AccordMedKe"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full py-3 px-4 rounded-lg font-medium flex items-center justify-center gap-2 button-hover transition-all duration-300"
@@ -328,7 +341,7 @@ export default function EntryPage() {
                   Facebook
                 </a>
                 <a
-                  href="https://linkedin.com"
+                  href="https://www.linkedin.com/company/accord-medical-supplies-ltd"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full py-3 px-4 rounded-lg font-medium flex items-center justify-center gap-2 button-hover transition-all duration-300"
@@ -338,7 +351,7 @@ export default function EntryPage() {
                   LinkedIn
                 </a>
                 <a
-                  href="https://tiktok.com"
+                  href="https://www.tiktok.com/@accordmedicalke"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full py-3 px-4 rounded-lg font-medium flex items-center justify-center gap-2 button-hover transition-all duration-300"
@@ -360,6 +373,46 @@ export default function EntryPage() {
       >
         <div className="max-w-6xl mx-auto px-4 py-8">
           <div className="text-center">
+            {/* Share buttons */}
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <ShareButton
+                platform="x"
+                aria-label="Share on X"
+                className="py-2 px-3 rounded-md button-hover"
+              />
+              <ShareButton
+                platform="facebook"
+                aria-label="Share on Facebook"
+                className="py-2 px-3 rounded-md button-hover"
+              />
+              <ShareButton
+                platform="whatsapp"
+                aria-label="Share on WhatsApp"
+                className="py-2 px-3 rounded-md button-hover"
+              />
+              <ShareButton
+                platform="linkedin"
+                aria-label="Share on LinkedIn"
+                className="py-2 px-3 rounded-md button-hover"
+              />
+              <button
+                onClick={async () => {
+                  try {
+                    await navigator.clipboard.writeText("https://accordmedical.co.ke")
+                    setCopied(true)
+                    setTimeout(() => setCopied(false), 1800)
+                  } catch (e) {
+                    alert("Copy failed — please copy the URL manually: https://accordmedical.co.ke")
+                  }
+                }}
+                className="py-2 px-3 rounded-md button-hover"
+                aria-label="Copy link"
+              >
+                <Copy className="w-4 h-4 inline-block mr-2" />
+                {copied ? "Link copied" : "Copy link"}
+              </button>
+            </div>
+
             <p style={{ color: "#6B7280" }} className="text-sm">
               © 2025 Accord Medical Supplies Ltd. All rights reserved.
             </p>
@@ -370,5 +423,65 @@ export default function EntryPage() {
         </div>
       </footer>
     </div>
+  )
+}
+
+function ShareButton({ platform, className, ...props }: { platform: string; className?: string } & React.ButtonHTMLAttributes<HTMLButtonElement>) {
+  const pageUrl = 'https://accordmedical.co.ke'
+  const shareText = 'Check out Accord Medical Supplies Ltd — https://accordmedical.co.ke'
+
+  const handleClick = () => {
+    switch (platform) {
+      case 'x':
+        window.open(
+          `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`,
+          '_blank',
+        )
+        break
+      case 'facebook':
+        window.open(
+          `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`,
+          '_blank',
+        )
+        break
+      case 'whatsapp':
+        window.open(
+          `https://wa.me/?text=${encodeURIComponent(shareText)}`,
+          '_blank',
+        )
+        break
+      case 'linkedin':
+        window.open(
+          `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(pageUrl)}`,
+          '_blank',
+        )
+        break
+      default:
+        window.open(pageUrl, '_blank')
+    }
+  }
+
+  const Icon = (() => {
+    switch (platform) {
+      case 'x':
+        return MessageCircle
+      case 'facebook':
+        return Facebook
+      case 'whatsapp':
+        return MessageCircle
+      case 'linkedin':
+        return Linkedin
+      default:
+        return Share2
+    }
+  })()
+
+  return (
+    // @ts-ignore - JSX in same file, small helper
+    <button onClick={handleClick} className={className + ' flex items-center gap-2'} {...props}>
+      {/* @ts-ignore */}
+      <Icon className="w-4 h-4 inline-block" />
+      <span className="sr-only">Share</span>
+    </button>
   )
 }

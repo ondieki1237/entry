@@ -83,9 +83,12 @@ export default function RootLayout({
     url: "https://accordmedical.co.ke",
     logo: "https://accordmedical.co.ke/logo.png",
     sameAs: [
-      "https://www.facebook.com/accordmedical",
-      "https://www.instagram.com/accordmedical",
-      "https://www.linkedin.com/company/accordmedical",
+      "https://x.com/AccordMedKe",
+      "https://www.facebook.com/AccordMedKe",
+      "https://www.instagram.com/accordmedicalke/",
+      "https://www.linkedin.com/company/accord-medical-supplies-ltd",
+      "https://www.tiktok.com/@accordmedicalke",
+      "https://accordmedical.co.ke",
     ],
     contactPoint: [
       {
