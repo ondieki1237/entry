@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://accordmedical.co.ke/sitemap.xml
+
+# Crawl-delay can be set by search engines that respect it. Keeping default.
+# For staging or disallowed areas, add:
+# Disallow: /secret
